@@ -1,0 +1,7 @@
+Title,Description,book_feature
+The Bruce Lee Story,"The widow of the late martial arts star traces his life from his childhood in Hong Kong, to his education in the United States, his career as an actor, and his untimely death","
+{'Genre':'Non-Frictional', 'User Reading phase':'medium', 'User Maturity Level':'medium'}"
+Python Programming with the Java Class Libraries: A Tutorial for Building Web and Enterprise Applications with Jython,"""Whether you are sophisticated computer user new to programming or a serious application developer, Python Programming with the Java Class Libraries will give you insight into the power of Python and the know-how to put it to work.""--Jacket.","
+Output: {'Genre':'Skill development', 'User Reading phase':'medium', 'User Maturity Level':'medium'}"
+Alice's Adventures in Wonderland / Through the Looking-Glass,"""I can't explain myself, I'm afraid, sir,"" said Alice, ""Because I'm not myself, you see.""When Alice sees a white rabbit take a watch out of its waistcoat pocket she decides to follow it, and a sequence of most unusual events is set in motion. This mini book contains the entire topsy-turvy stories of Alice's Adventures in Wonderland and Through the Looking-Glass, accompanied by practical notes and Martina Pelouso's memorable full-colour illustrations.","
+{'Genre': 'Frictional', 'User Reading phase': 'medium', 'User Maturity Level': 'low'}"
