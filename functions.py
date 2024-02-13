@@ -4,7 +4,9 @@ import re
 import pandas as pd
 import json
 
-
+'''
+Initialises the prompts to begin conversation.
+'''
 def initialize_conversation():
     '''
     Returns a list [{"role": "system", "content": system_message}]
@@ -73,7 +75,9 @@ def initialize_conversation():
     return conversation
 
 
-
+'''
+Invokes the chatgpt model to obtain the messages for bot.
+'''
 def get_chat_model_completions(messages):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -84,7 +88,9 @@ def get_chat_model_completions(messages):
     return response.choices[0].message["content"]
 
 
-
+'''
+Makes sure the input and output in complaint without any sensitive/vulnerable information.
+'''
 def moderation_check(user_input):
     response = openai.Moderation.create(input=user_input)
     moderation_output = response["results"][0]
@@ -94,7 +100,9 @@ def moderation_check(user_input):
         return "Not Flagged"
 
 
-    
+'''
+Extracts the requirements features based on the user input and Identifies if all the required information for recommendation has been collected from the user.
+'''    
 def intent_confirmation_layer(response_assistant):
     delimiter = "####"
     genre_values = {'Frictional','Non-Frictional','Self Improvement','Knowledge Expansion'}
@@ -174,7 +182,10 @@ def extract_dictionary_from_string(string):
 
 
 
-
+'''
+Compares the user features and the books features to filter the books matching for the user requests.
+This is a simple rule based logic and chatgpt is not used. Filters out top 2 books matching the user requirements.
+'''
 def compare_books_with_user(user_req_string):
     books_df= pd.read_csv('updated_books.csv')
     

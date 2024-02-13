@@ -8,22 +8,25 @@ import pandas as pd
 import json
 import time
 
+# Sets the api key for processing with chatgpt
 openai.api_key = open("api_key.txt", "r").read().strip()
 
 app = Flask(__name__)
 
+# Initialises chat bot conversations
 conversation_bot = []
 conversation = initialize_conversation()
 introduction = get_chat_model_completions(conversation)
 conversation_bot.append({'bot':introduction})
 top_2_books = None
 
-
+# Routes to the default page
 @app.route("/")
 def default_func():
     global conversation_bot, conversation, top_2_books
     return render_template("index_bookAssistant.html", name_xyz = conversation_bot)
 
+# routes to the default page after end conversation
 @app.route("/end_conv", methods = ['POST','GET'])
 def end_conv():
     global conversation_bot, conversation, top_2_books
@@ -34,6 +37,14 @@ def end_conv():
     top_2_books = None
     return redirect(url_for('default_func'))
 
+'''
+Handles the conversation with the chat bot.
+
+Invoked whenever user inputs message.
+takes the user input message, extracts the features of books user looking for from the conversation
+and suggests recommended books.
+All input and output messages goes through moderation check to make sure the conversations aligns with books.
+'''
 @app.route("/assistant", methods = ['POST'])
 def assistant():
     global conversation_bot, conversation, top_2_books, conversation_reco
@@ -44,6 +55,7 @@ def assistant():
         return redirect(url_for('end_conv'))
 
     if top_2_books is None:
+        # Identify the matching books for user profile by engaging with user
         conversation.append({"role": "user", "content": user_input + prompt})
         conversation_bot.append({'user':user_input})
 
@@ -53,6 +65,7 @@ def assistant():
         if moderation == 'Flagged':
             return redirect(url_for('end_conv'))
 
+        # checks if all required features are obtained
         confirmation = intent_confirmation_layer(response_assistant)
 
         moderation = moderation_check(confirmation)
@@ -60,11 +73,11 @@ def assistant():
             return redirect(url_for('end_conv'))
 
         if "No" in confirmation:
+            # Engage in further conversation with user to obtain the missing feature.
             conversation.append({"role": "assistant", "content": response_assistant})
             conversation_bot.append({'bot':response_assistant})
         else:
-            print ("If - Please wait for 20 secs...")
-            time.sleep(21)
+            # Proceed with extracting the matching books.
             response = dictionary_present(response_assistant)
 
             moderation = moderation_check(response)
@@ -94,8 +107,7 @@ def assistant():
             print(recommendation + '\n')
 
     else:
-        print ("If - Please wait for 20 secs...")
-        time.sleep(21)
+        # Engage in conversation with the user recommending the matched books and any details further requested.
         conversation_reco.append({"role": "user", "content": user_input})
         conversation_bot.append({'user':user_input})
 
