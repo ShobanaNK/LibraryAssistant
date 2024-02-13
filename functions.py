@@ -178,7 +178,7 @@ def extract_dictionary_from_string(string):
 
         # Convert the dictionary string to a dictionary object using ast.literal_eval()
         dictionary = ast.literal_eval(dictionary_string)
-    return dictionary
+        return dictionary
 
 
 
